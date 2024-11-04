@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Payments() {
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const username = state?.username;
+
+  useEffect(() => {
+    if (!username) {
+      navigate('/login', { state: { redirect: '/payments' } });
+    }
+  }, [username, navigate]);
+
+  // If no username, return null to avoid rendering the component before navigation happens
+  if (!username) {
+    return null;
+  }
+
   const [payments, setPayments] = useState([]);
   const fetchPayments = async () => {
     const res = await axios({
@@ -19,7 +35,7 @@ function Payments() {
   }, []);
   return (
     <>
-      <Navbar />
+      <Navbar username={username} />
       <div className="flex flex-wrap gap-4 ml-56">
         {payments.map((p) => (
           <PaymentCard payment={p} />

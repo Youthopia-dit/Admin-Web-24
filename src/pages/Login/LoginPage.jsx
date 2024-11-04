@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 // import { Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { state } = useLocation();
+  const redirect = state ? state.redirect : '/';
   const [error, setError] = useState('');
   const Navigate = useNavigate();
 
@@ -30,7 +32,7 @@ function LoginPage() {
 
     console.log(res.data);
     if (res.status === 200) {
-      Navigate('/', { state: { username } });
+      Navigate(redirect, { state: { username } });
     }
     setError(''); // Clear any existing error
     console.log('Logging in with:', { username, password });

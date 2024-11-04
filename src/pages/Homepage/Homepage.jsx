@@ -10,7 +10,7 @@ function Homepage() {
 
   useEffect(() => {
     if (!username) {
-      navigate('/login');
+      navigate('/login', { state: { redirect: '/' } });
     }
   }, [username, navigate]);
 
