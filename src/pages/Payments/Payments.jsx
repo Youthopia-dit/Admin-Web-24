@@ -32,8 +32,18 @@ function Payments() {
     setPayments(res.data);
   };
 
+  const fetchPaymentDetails = async () => {
+    const res = await axios({
+      method: 'get',
+      url: 'https://api.razorpay.com/v1/payments/pay_PELK1ut2aH5bPG',
+    });
+
+    log(res);
+  };
+
   useEffect(() => {
     fetchPayments();
+    fetchPaymentDetails();
   }, []);
 
   // Pdf
@@ -57,6 +67,7 @@ function Payments() {
     const data = payments.map((elt) => [
       elt.email,
       elt.paymentInfo.order_id,
+      elt.paymentInfo.amount,
       elt.paymentSuccess,
       elt.paymentInfo.payment_id,
       elt.paymentSuccess,
@@ -113,7 +124,7 @@ function PaymentCard({ payment }) {
               >
                 <td className="py-3 px-6">{entry.email}</td>
                 <td className="py-3 px-6">{entry.paymentInfo.order_id}</td>
-                <td className="py-3 px-6">200</td>
+                <td className="py-3 px-6">{entry.paymentInfo.amount}</td>
                 <td className="py-3 px-6">{entry.paymentInfo.payment_id}</td>
                 <td className="py-3 px-6">
                   {entry.paymentSuccess ? 'Yes' : 'No'}
